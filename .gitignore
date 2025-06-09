@@ -1,1 +1,7 @@
 .env
+
+/backend/__pycache__
+
+/backend/serviceAccountKey.json
+
+/backend/set_firebase_env.py
