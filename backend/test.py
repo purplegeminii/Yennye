@@ -1,0 +1,18 @@
+import requests
+
+
+token = "eyJhbGciOiJSUzI1NiIsImtpZCI6ImE0YTEwZGVjZTk4MzY2ZDZmNjNlMTY3Mjg2YWU5YjYxMWQyYmFhMjciLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20veWVubnllLTM4YzQwIiwiYXVkIjoieWVubnllLTM4YzQwIiwiYXV0aF90aW1lIjoxNzQ5NDgzODA1LCJ1c2VyX2lkIjoiVHNLYThieDNvRWJaMGxjQTk2YjJ1NXVWS2h1MiIsInN1YiI6IlRzS2E4Yngzb0ViWjBsY0E5NmIydTV1VktodTIiLCJpYXQiOjE3NDk0ODM4MDUsImV4cCI6MTc0OTQ4NzQwNSwiZW1haWwiOiJrd2VzaWt1bWk2QGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJrd2VzaWt1bWk2QGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.R2gwPWOwMpQXg4WIEQIh6JHWlGYpQgQXq8mHpjzhssZ3Gvp8HXNQ2-qerfoagSjdLlfRUGA8-979oUEA6TJbvGkzAlnsyrsT5_oPDf5BeGtpZ68iTbT8wNldgHPVO3apiiF7YPGqKyMOOzipywGIe3qqvpiwCFgIs77FhEnc9z8-F7AahFgfnmB9aBq9DnBXy-1lqVGpSocYZ42XBOnHhhTpVb6xcgld0IFVvkz2wZRzTXbHsi6v1Ff1_FioQtW1FLuyLC7W0qDXhqenLJmsfSOL49uTOPE1o-Q7dZHQtSpYwOj6JYuUzzp_7NqlWESGVnqaD6eXPYon4BQiVtvQJg"
+
+def test_validate_token():
+    headers = {
+        'authorization': token
+    }
+
+    response = requests.post(
+        "http://127.0.0.1:8000/ping",
+        headers=headers
+    )
+
+    return response.text
+
+print(test_validate_token())

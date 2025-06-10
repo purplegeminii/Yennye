@@ -1,7 +1,11 @@
 .env
 
-/backend/__pycache__
+__pycache__/
 
 /backend/serviceAccountKey.json
 
 /backend/set_firebase_env.py
+
+*.pyc
+firebase_service_account.json
+Pipfile.lock
