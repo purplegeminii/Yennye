@@ -8,7 +8,6 @@ fastapi = "*"
 uvicorn = "*"
 firebase-admin = "*"
 pyrebase = "*"
-python-dotenv = "*"
 
 [dev-packages]
 
