@@ -2,10 +2,11 @@
 
 from fastapi import APIRouter, HTTPException
 from app.models.farm import Farm
-from app.config import db
+from app.config import get_db
 from app.utils.response import success_response, error_response
 
 router = APIRouter()
+db = get_db()
 
 @router.post("/register", response_model=Farm)
 def register_farm(farm: Farm):

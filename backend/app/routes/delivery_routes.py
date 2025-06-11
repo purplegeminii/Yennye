@@ -2,9 +2,10 @@
 
 from fastapi import APIRouter
 from app.models.delivery import Delivery
-from app.config import db
+from app.config import get_db
 
 router = APIRouter()
+db = get_db()
 
 @router.post("/assign", response_model=Delivery)
 def assign_delivery(delivery: Delivery):

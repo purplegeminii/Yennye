@@ -2,9 +2,10 @@
 
 from fastapi import APIRouter
 from app.models.order import Order
-from app.config import db
+from app.config import get_db
 
 router = APIRouter()
+db = get_db()
 
 @router.post("/place", response_model=Order)
 def place_order(order: Order):
