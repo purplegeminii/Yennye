@@ -7,17 +7,8 @@ from app.utils.password_utils import verify_password
 from app.utils.response import success_response, error_response
 
 
-# def create_firebase_user(email: str, password: str):
-#     user_record = auth.create_user(
-#         email=email,
-#         password=password
-#     )
-#     return user_record.uid
-
-
 def verify_token(id_token: str):
-    decoded_token = auth.verify_id_token(id_token)  #jwt
-    return decoded_token
+    return auth.verify_id_token(id_token)  #jwt
 
 
 def authenticate_user(email: str, password: str, db) -> dict:

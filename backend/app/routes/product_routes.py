@@ -14,7 +14,7 @@ def add_product(product: Product):
     try:
         ref = db.collection("products").document(product.product_id)
         ref.set(product.model_dump())
-        return success_response(data=product.model_dump(), message="Product added successfully")
+        return success_response(status_code=201, data=product.model_dump(), message="Product added successfully")
     except Exception as e:
         return error_response(message=str(e))
 

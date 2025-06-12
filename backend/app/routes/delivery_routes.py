@@ -15,7 +15,7 @@ def assign_delivery(delivery: Delivery):
     try:
         ref = db.collection("deliveries").document(delivery.delivery_id)
         ref.set(delivery.model_dump())
-        return success_response(data=delivery.model_dump(), message="Delivery assigned successfully")
+        return success_response(status_code=201, data=delivery.model_dump(), message="Delivery assigned successfully")
     except Exception as e:
         return error_response(message=str(e))
 

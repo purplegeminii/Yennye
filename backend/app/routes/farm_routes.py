@@ -13,7 +13,7 @@ def register_farm(farm: Farm):
     try:
         ref = db.collection("farms").document(farm.farm_id)
         ref.set(farm.model_dump())
-        return success_response(data=farm.model_dump(), message="Farm registered successfully")
+        return success_response(status_code=201, data=farm.model_dump(), message="Farm registered successfully")
     except Exception as e:
         return error_response(message=str(e))
 
@@ -22,7 +22,7 @@ def get_farm(farm_id: str):
     try:
         doc = db.collection("farms").document(farm_id).get()
         if not doc.exists:
-            return error_response(message="Farm not found")
+            return error_response(status_code=404, message="Farm not found")
         farm = Farm(**doc.to_dict())
         return success_response(data=farm.model_dump(), message="Farm retrieved successfully")
     except Exception as e:
@@ -33,7 +33,7 @@ def update_farm(farm_id: str, farm: Farm):
     try:
         doc = db.collection("farms").document(farm_id).get()
         if not doc.exists:
-            return error_response(message="Farm not found")
+            return error_response(status_code=404, message="Farm not found")
         db.collection("farms").document(farm_id).update(farm.model_dump())
         return success_response(data=farm.model_dump(), message="Farm updated successfully")
     except Exception as e:
@@ -44,7 +44,7 @@ def delete_farm(farm_id: str):
     try:
         doc = db.collection("farms").document(farm_id).get()
         if not doc.exists:
-            return error_response(message="Farm not found")
+            return error_response(status_code=404, message="Farm not found")
         db.collection("farms").document(farm_id).delete()
         return success_response(message="Farm deleted successfully")
     except Exception as e:

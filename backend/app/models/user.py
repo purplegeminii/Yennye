@@ -54,11 +54,27 @@ class User(UserBase):
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
+    id_token: Optional[str] = None
 
     class Config:
         json_schema_extra = {
             "example": {
                 "email": "sample@email.com",
-                "password": "password"
+                "password": "password",
+                "id_token": None
+            }
+        }
+
+class UserUpdate(BaseModel):
+    full_name: Optional[str] = None
+    email: Optional[EmailStr] = None
+    role: RoleEnum
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "full_name": "fullname",
+                "email": "sample@email.com",
+                "role": "customer"
             }
         }

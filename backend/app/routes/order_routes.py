@@ -14,7 +14,7 @@ def place_order(order: Order):
     try:
         ref = db.collection("orders").document(order.order_id)
         ref.set(order.model_dump())
-        return success_response(data=order.model_dump(), message="Order placed successfully")
+        return success_response(status_code=201, data=order.model_dump(), message="Order placed successfully")
     except Exception as e:
         return error_response(message=str(e))
 
