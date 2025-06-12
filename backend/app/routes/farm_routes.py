@@ -12,7 +12,7 @@ db = get_db()
 def register_farm(farm: Farm):
     try:
         ref = db.collection("farms").document(farm.farm_id)
-        ref.set(farm.dict())
+        ref.set(farm.model_dump())
         return success_response(data=farm.model_dump(), message="Farm registered successfully")
     except Exception as e:
         return error_response(message=str(e))
@@ -34,7 +34,7 @@ def update_farm(farm_id: str, farm: Farm):
         doc = db.collection("farms").document(farm_id).get()
         if not doc.exists:
             return error_response(message="Farm not found")
-        db.collection("farms").document(farm_id).update(farm.dict())
+        db.collection("farms").document(farm_id).update(farm.model_dump())
         return success_response(data=farm.model_dump(), message="Farm updated successfully")
     except Exception as e:
         return error_response(message=str(e))

@@ -1,10 +1,8 @@
 from fastapi import FastAPI
-import uvicorn
 from app import config
 from app.routes import (
     user_routes, farm_routes, product_routes, order_routes, delivery_routes
 )
-
 
 
 app = FastAPI(

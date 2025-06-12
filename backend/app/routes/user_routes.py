@@ -4,9 +4,8 @@
 from fastapi import APIRouter, HTTPException
 from app.models.user import *
 from app.config import get_db
-# from app.utils.id_generator import generate_id
 from app.services.auth_service import authenticate_user
-from app.utils.password_utils import hash_password, verify_password
+from app.utils.password_utils import hash_password
 from app.utils.response import success_response, error_response
 
 router = APIRouter()
@@ -29,8 +28,8 @@ def register_user(user: UserCreate):
     except Exception as e:
         return error_response(message=str(e))
 
-@router.post("/login")
-def login_user(user: UserLogin):  # Reusing UserCreate for email & password
+@router.post("/login", response_model=User)
+def login_user(user: UserLogin):
     try:
         user_data = authenticate_user(user.email, user.password, db)
         return success_response(data=user_data, message="Login successful")
@@ -39,20 +38,34 @@ def login_user(user: UserLogin):  # Reusing UserCreate for email & password
 
 @router.get("/{uid}", response_model=User)
 def get_user(uid: str):
-    doc = db.collection("users").document(uid).get()
-    if not doc.exists:
-        raise HTTPException(status_code=404, detail="User not found")
-    return User(**doc.to_dict()).model_dump()
+    try:
+        doc = db.collection("users").document(uid).get()
+        if not doc.exists:
+            return error_response(message="User not found")
+        user = User(**doc.to_dict())
+        return success_response(data=user.model_dump(), message="User retrieved successfully")
+    except Exception as e:
+        return error_response(message=str(e))
 
 @router.put("/{uid}", response_model=User)
 def update_user(uid: str, user: UserCreate):
-    user_data = user.model_dump()
-    user_data.pop("password")
-    user_data["uid"] = uid
-    db.collection("users").document(uid).update(user_data)
-    return User(**user_data).model_dump()
+    try:
+        user_data = user.model_dump()
+        user_data.pop("password")
+        user_data["uid"] = uid
+        db.collection("users").document(uid).update(user_data)
+        user = User(**user_data)
+        return success_response(data=user.model_dump(), message="User updated successfully")
+    except Exception as e:
+        return error_response(message=str(e))
 
-@router.delete("/{uid}")
+@router.delete("/{uid}", response_model=User)
 def delete_user(uid: str):
-    db.collection("users").document(uid).delete()
-    return {"status": "success", "message": "User deleted"}
+    try:
+        doc = db.collection("farms").document(uid).get()
+        if not doc.exists:
+            return error_response(message="User not found")
+        db.collection("farms").document(uid).delete()
+        return success_response(message="User deleted successfully")
+    except Exception as e:
+        return error_response(message=str(e))
