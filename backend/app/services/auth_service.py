@@ -1,5 +1,6 @@
 """app/services/auth_service.py"""
 
+from fastapi import HTTPException
 import firebase_admin
 from firebase_admin import auth
 from app.utils.password_utils import verify_password
@@ -24,11 +25,11 @@ def authenticate_user(email: str, password: str, db) -> dict:
     user = next(users, None)
 
     if not user or not user.exists:
-        raise Exception("Invalid email or password")
+        raise HTTPException(status_code=400, detail="Invalid email or password")
 
     user_data = user.to_dict()
     if not verify_password(password, user_data["password"]):
-        raise Exception("Invalid email or password")
+        raise HTTPException(status_code=400, detail="Invalid email or password")
 
     # Firebase Admin SDK doesn't support password login, so normally you'd use Firebase client SDK for this.
     # But if using token-based login elsewhere, return user info here
