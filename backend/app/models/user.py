@@ -2,16 +2,24 @@
 
 from pydantic import BaseModel, EmailStr
 from typing import Optional
+from enum import Enum
+
+class RoleEnum(str, Enum):
+    customer = "customer"
+    farmer = "farmer"
+    admin = "admin"
+    delivery_agent = "delivery_agent"
 
 class UserBase(BaseModel):
     full_name: str
     email: EmailStr
-    role: str  # 'customer', 'farmer', 'admin', 'delivery_agent'
+    # role: str  # 'customer', 'farmer', 'admin', 'delivery_agent'
+    role: RoleEnum
 
     class Config:
         json_schema_extra = {
             "example": {
-                "fullname": "fullname",
+                "full_name": "fullname",
                 "email": "sample@email.com",
                 "role": "customer"
             }
@@ -23,7 +31,7 @@ class UserCreate(UserBase):
     class Config:
         json_schema_extra = {
             "example": {
-                "fullname": "fullname",
+                "full_name": "fullname",
                 "email": "sample@email.com",
                 "role": "customer",
                 "password": "password"
@@ -36,7 +44,7 @@ class User(UserBase):
     class Config:
         json_schema_extra = {
             "example": {
-                "fullname": "fullname",
+                "full_name": "fullname",
                 "email": "sample@email.com",
                 "role": "customer",
                 "uid": "uid"

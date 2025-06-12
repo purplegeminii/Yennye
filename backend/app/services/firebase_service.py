@@ -1,8 +1,10 @@
 """app/services/firebase_service.py"""
 
-from app.config import db
+from app.config import get_db
 from google.cloud.firestore import DocumentReference
 from typing import Optional, Dict, List
+
+db = get_db()
 
 def create_document(collection_name: str, data: Dict, doc_id: Optional[str] = None) -> str:
     try:
