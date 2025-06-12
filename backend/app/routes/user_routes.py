@@ -3,6 +3,7 @@
 
 from fastapi import APIRouter, HTTPException, Header
 from app.models.user import *
+from app.models.response import ResponseModel
 from app.config import get_db, pyrebaseFirebase
 from app.services.auth_service import authenticate_user, verify_token
 from app.utils.password_utils import hash_password
@@ -12,7 +13,7 @@ router = APIRouter()
 db = get_db()
 
 
-@router.post("/register")
+@router.post("/register", response_model=ResponseModel[User])
 def register_user(user: UserCreate):
     try:
         # Register with Firebase Authentication
@@ -34,7 +35,7 @@ def register_user(user: UserCreate):
         return error_response(message=str(e))
 
 
-@router.post("/login")
+@router.post("/login", response_model=ResponseModel[UserLoginResponse])
 def login_user(user: UserLogin):
     try:
         user_data = authenticate_user(user.email, user.password, db)
@@ -47,7 +48,7 @@ def login_user(user: UserLogin):
     except Exception as e:
         return error_response(message=str(e))
 
-@router.get("/{uid}", response_model=User)
+@router.get("/{uid}", response_model=ResponseModel[User])
 def get_user(uid: str):
     try:
         doc = db.collection("users").document(uid).get()
@@ -62,7 +63,12 @@ def get_user(uid: str):
 @router.put("/{uid}", response_model=User)
 def update_user(uid: str, user: UserUpdate, authorization: str = Header(...)):
     try:
-        decoded = verify_token(authorization)
+        if not authorization.startswith("Bearer "):
+            return error_response(status_code=401, message="Invalid authorization header format")
+
+        token = authorization.split(" ")[1]  # Extract token after 'Bearer'
+        decoded = verify_token(token)
+        
         if decoded['uid'] != uid:
             return error_response(status_code=403, message="Unauthorized to update this user")
 

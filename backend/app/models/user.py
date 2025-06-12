@@ -13,7 +13,6 @@ class RoleEnum(str, Enum):
 class UserBase(BaseModel):
     full_name: str
     email: EmailStr
-    # role: str  # 'customer', 'farmer', 'admin', 'delivery_agent'
     role: RoleEnum
 
     class Config:
@@ -54,16 +53,23 @@ class User(UserBase):
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
-    id_token: Optional[str] = None
+    # id_token: Optional[str] = None
 
     class Config:
         json_schema_extra = {
             "example": {
                 "email": "sample@email.com",
-                "password": "password",
-                "id_token": None
+                "password": "password"
             }
         }
+
+class UserLoginResponse(BaseModel):
+    email: EmailStr
+    full_name: str
+    role: str
+    uid: str
+    id_token: str
+
 
 class UserUpdate(BaseModel):
     full_name: Optional[str] = None
