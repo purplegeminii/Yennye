@@ -69,7 +69,7 @@ def update_user(uid: str, user: UserUpdate, authorization: str = Header(...)):
         token = authorization.split(" ")[1]  # Extract token after 'Bearer'
         decoded = verify_token(token)
         
-        if decoded['uid'] != uid:
+        if (decoded['uid'] != uid) and (user.role != "admin"):
             return error_response(status_code=403, message="Unauthorized to update this user")
 
         user_ref = db.collection("users").document(uid)
