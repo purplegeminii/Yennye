@@ -7,8 +7,6 @@ __pycache__/
 /backend/set_firebase_env.py
 
 *.pyc
-firebase_service_account.json
-Pipfile.lock
 
 /backend/main.py
 /backend/models.py
